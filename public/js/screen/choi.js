@@ -2,7 +2,10 @@ var app = new Vue({
     el: '#app',
     data: {
         checkedRole: [],
-        myrole: "Chưa nhận",
+        myrole: {
+            name: "Chưa nhận",
+            note: ""
+        },
         items: [],
         user: {
             username: null,

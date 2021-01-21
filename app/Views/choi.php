@@ -21,7 +21,8 @@ include_once 'header.php'; ?>
                 <span>{{ item.username }}</span>
             </button>
             <hr />
-            Vai trò của bạn là: <b>{{myrole}}</b>
+            Vai trò của bạn là: <b>{{myrole.name}}</b><br/>
+            Chức năng: {{myrole.note}}
             <?php
             if ($session->isadmin) {
             ?>

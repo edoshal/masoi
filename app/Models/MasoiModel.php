@@ -92,9 +92,10 @@ class MasoiModel extends Model
         $db      = \Config\Database::connect();
         $builder = $db->table('game');
         $builder->select('name');
+        $builder->select('note');
         $builder->join('role', 'game.role = role.id');
         $builder->where('game.id', $session->get("id"));
         $query = $builder->get();
-        return $query->getRow()->name;
+        return $query->getRow();
     }
 }

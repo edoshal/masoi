@@ -24,4 +24,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-axios.defaults.baseURL = 'https://masoi.thienkiep.com/Api';
+axios.defaults.baseURL = 'http://localhost:8888/Api';
