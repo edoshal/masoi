@@ -25,7 +25,8 @@ class MasoiModel extends Model
             $data = [
                 'username' => $username,
                 'room'  => $room,
-                'isAdmin'  => TRUE
+                'isAdmin'  => TRUE,
+                'role' => 21
             ];
         } else {
             $data = [
@@ -44,9 +45,39 @@ class MasoiModel extends Model
     {
         $db      = \Config\Database::connect();
         $builder = $db->table('game');
+
+        $builder->select('game.*');
+        $builder->select('role.name');
+        $builder->select('role.note');
+        $builder->select('role.img');
+        $builder->select('role.team');
+
         $builder->where('room', $room);
         $builder->where('lastping >= now() - interval 10 second');
+        $builder->join('role', 'game.role = role.id');
+        $builder->orderBy('point', 'DESC');
 
+        $query = $builder->get();
+
+        return $query->getResult();
+    }
+    function GetListMemberOnly($room)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('game');
+        $builder->where('room', $room);
+        $builder->where('isAdmin', 0);
+        $builder->where('lastping >= now() - interval 10 second');
+        $query = $builder->get();
+
+        return $query->getResult();
+    }
+
+    function GetListRole()
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('role');
+        $builder->whereNotIn('id', [1, 20, 6]);
         $query = $builder->get();
 
         return $query->getResult();
@@ -75,12 +106,62 @@ class MasoiModel extends Model
     }
 
 
-    //ping status
+    //set role
     function SetRole($uid, $role)
     {
         $db      = \Config\Database::connect();
         $builder = $db->table('game');
         $builder->set('role', $role);
+        $builder->set('status', 1);
+        $builder->where('id', $uid);
+        $builder->update();
+    }
+    //kick member
+    function KickMember($uid)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('game');
+        $builder->where('id', $uid);
+        $builder->delete();
+    }
+
+
+    //add Gold
+    function AddGold($uid)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('game');
+        $builder->set('point', 'point+10', FALSE);
+        $builder->where('id', $uid);
+        $builder->update();
+    }
+
+    //Sub Gold
+    function SubGold($uid)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('game');
+        $builder->set('point', 'point-10', FALSE);
+        $builder->where('id', $uid);
+        $builder->update();
+    }
+
+    //Sub Gold
+    function Kill($uid)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('game');
+        $builder->set('status', 0);
+        $builder->where('id', $uid);
+        $builder->update();
+    }
+
+    //Sub Gold
+    function Revival($uid)
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('game');
+        $builder->set('status', 1);
         $builder->where('id', $uid);
         $builder->update();
     }
@@ -93,6 +174,8 @@ class MasoiModel extends Model
         $builder = $db->table('game');
         $builder->select('name');
         $builder->select('note');
+        $builder->select('team');
+        $builder->select('img');
         $builder->join('role', 'game.role = role.id');
         $builder->where('game.id', $session->get("id"));
         $query = $builder->get();

@@ -4,7 +4,7 @@ include_once 'header.php';
 ?>
 <div class="container">
     <div class="buttons">
-        <a class="button is-primary is-outlined" href="/Choi/index/<?= generateRandomString() ?>">
+        <a class="button is-primary is-outlined" href="/Choi/index/<?= generateRandomString(12) ?>">
             <span class="icon-text">
                 <span class="icon">
                     <i class="fas fa-plus"></i>

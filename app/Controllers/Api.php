@@ -45,41 +45,111 @@ class Api extends BaseController
 		return $this->respond($masoiModel->GetMyRole());
 	}
 
+	//kickmember
+	public function kickMember()
+	{
+		$request = \Config\Services::request();
+		$uid = $request->getVar('uid');
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$masoiModel->KickMember($uid);
+		}
+	}
+
+	//ping
+	public function addGold()
+	{
+		$request = \Config\Services::request();
+		$uid = $request->getVar('uid');
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$masoiModel->AddGold($uid);
+		}
+	}
+
+
+	//subgold
+	public function subGold()
+	{
+		$request = \Config\Services::request();
+		$uid = $request->getVar('uid');
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$masoiModel->SubGold($uid);
+		}
+	}
+
+	//ping
+	public function kill()
+	{
+		$request = \Config\Services::request();
+		$uid = $request->getVar('uid');
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$masoiModel->Kill($uid);
+		}
+	}
+
+	//ping
+	public function revival()
+	{
+		$request = \Config\Services::request();
+		$uid = $request->getVar('uid');
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$masoiModel->Revival($uid);
+		}
+	}
+	//clear role
+
+	public function clearRoles()
+	{
+		$request = \Config\Services::request();
+		$room = $request->getVar('room');
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$listMember = $masoiModel->GetListMemberOnly($room);
+			for ($x = 0; $x < count($listMember); $x++) {
+				$masoiModel->SetRole($listMember[$x]->id, 20);
+			}
+		}
+	}
+
 	//generate role
 	public function generate()
 	{
 		$request = \Config\Services::request();
 		$roles = $request->getVar("roles");
+		$numWoft = $request->getVar("woft");
 		$room = $request->getVar('room');
-		$masoiModel = new \App\Models\MasoiModel();
-		$listMember = $masoiModel->GetListMember($room);
-		shuffle($listMember);
-		// if(count($listMember) < 6) return;
-		$numSoi = ceil(count($listMember) / 3);
-		if ($numSoi >= 3 && count($listMember) < 9) $numSoi = 2;
-		$numPhuthuy = in_array("phuthuy", $roles) ? 1 : 0;
-		$numThosan = in_array("thosan", $roles) ? 1 : 0;
-		$numBaove = in_array("baove", $roles) ? 1 : 0;
-		$numTientri = in_array("tientri", $roles) ? 1 : 0;
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$listMember = $masoiModel->GetListMemberOnly($room);
+			shuffle($listMember);
+			// if(count($listMember) < 6) return;
+			$assignRole = true;
 
-		for ($x = 0; $x < count($listMember); $x++) {
-			if ($numSoi > 0) {
-				$masoiModel->SetRole($listMember[$x]->id, 1);
-				$numSoi--;
-			} else if ($numPhuthuy > 0) {
-				$masoiModel->SetRole($listMember[$x]->id, 2);
-				$numPhuthuy--;
-			} else if ($numThosan > 0) {
-				$masoiModel->SetRole($listMember[$x]->id, 3);
-				$numThosan--;
-			} else  if ($numBaove > 0) {
-				$masoiModel->SetRole($listMember[$x]->id, 4);
-				$numBaove--;
-			} else if ($numTientri > 0) {
-				$masoiModel->SetRole($listMember[$x]->id, 5);
-				$numTientri--;
-			} else {
-				$masoiModel->SetRole($listMember[$x]->id, 6);
+			for ($x = 0; $x < count($listMember); $x++) {
+				if ($numWoft > 0) {
+					$masoiModel->SetRole($listMember[$x]->id, 1);
+					$numWoft--;
+				} else if ($assignRole) {
+					foreach ($roles as &$role) {
+						$masoiModel->SetRole($listMember[$x]->id, $role);
+						$x++;
+					}
+					$assignRole = false;
+					$x--;
+				} else {
+					$masoiModel->SetRole($listMember[$x]->id, 6);
+				}
 			}
 		}
 	}

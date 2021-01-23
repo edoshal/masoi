@@ -14,29 +14,59 @@ include_once 'header.php'; ?>
             echo "Xin chào $session->username";
         ?>
             <br />
-            <button v-for="item in items" :key="item.username" class="button is-primary is-rounded" style="margin-left: 5px;">
-                <span class="icon">
-                    <i class="fas fa-user"></i>
-                </span>
-                <span>{{ item.username }}</span>
-            </button>
-            <hr />
-            Vai trò của bạn là: <b>{{myrole.name}}</b><br/>
-            Chức năng: {{myrole.note}}
+            <div v-for="item in items" :key="item.username" class="user" v-bind:class="{'is-dead': item.status == 0}">
+                <div class="name">{{ item.username }}<br />
+                    Điểm: {{item.point}}<br />
+                    <?php if ($session->isadmin) {
+                        echo "{{item.name}}";
+                    } ?>
+                    </span>
+                </div>
+                <?php if ($session->isadmin) { ?>
+                    <div class="control">
+                        <a class="tag is-danger" v-on:click="kickMember(item.id)">Đuổi</a>
+                        <a class="tag is-success" v-on:click="addGold(item.id)">Thêm 10 tiền</a>
+                        <a class="tag is-danger" v-on:click="subGold(item.id)">Trừ 10 tiền</a>
+                        <a class="tag is-warning" v-if="item.status == 1" v-on:click=" kill(item.id)">Giết</a>
+                        <a class="tag is-warning" v-if="item.status == 0" v-on:click="revival(item.id)">Hồi sinh</a>
+                    <?php } ?>
+                    </div>
+            </div>
+            <center><button class="button is-link is-rounded" v-on:click="view = !view">Lật/Úp Bài</button></center>
+            <div v-if="view">
+                <hr />
+                <center> <img v-bind:src="'/img/' + myrole.img" width="250px"></center>
+                Vai trò của bạn là: <b>{{myrole.name}}</b><br />
+                Phe: <b>{{myrole.team}}</b><Br />
+                Chức năng: <i>{{myrole.note}}</i>
+            </div>
             <?php
             if ($session->isadmin) {
             ?>
                 <hr />
-                <input type="checkbox" id="tientri" value="tientri" v-model="checkedRole">
-                <label for="tientri">Tiên tri</label>
-                <input type="checkbox" id="baove" value="baove" v-model="checkedRole">
-                <label for="baove">Bảo vệ</label>
-                <input type="checkbox" id="thosan" value="thosan" v-model="checkedRole">
-                <label for="thosan">Thợ săn</label>
-                <input type="checkbox" id="phuthuy" value="phuthuy" v-model="checkedRole">
-                <label for="phuthuy">Phù thủy</label>
+                <button v-on:click="clearRole" class="button is-danger">Thu bài</button>
+                <button v-on:click="generateGame" class="button is-success">Chia bài</button>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Số Werewolf (Ma sói)</label>
+                            <div class="control">
+                                <input class="input" type="number" placeholder="Text input" v-model="setting.woft">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php foreach ($roles as $role) : ?>
+                    <input type="checkbox" id="<?= $role->id ?>" value="<?= $role->id ?>" v-model="setting.checkedRole">
+                    <label for="<?= $role->id ?>"><b><?= $role->name ?></b></label>
+                    <br />
+                    <i><?= $role->note ?></i>
+                    <br />
+                <?php endforeach; ?>
+
                 <br />
-                <button v-on:click="generateGame" class="button is-success">Tạo game</button>
+                <button v-on:click="clearRole" class="button is-danger">Thu bài</button>
+                <button v-on:click="generateGame" class="button is-success">Chia bài</button>
             <?php
             }
         } else {

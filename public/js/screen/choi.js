@@ -1,7 +1,11 @@
 var app = new Vue({
     el: '#app',
     data: {
-        checkedRole: [],
+        view: false,
+        setting: {
+            woft: 0,
+            checkedRole: [],
+        },
         myrole: {
             name: "Chưa nhận",
             note: ""
@@ -38,7 +42,7 @@ var app = new Vue({
                 console.log(error);
             });
 
-        }, 2000);
+        }, 1000);
     },
     computed: {
         newQRCode() {
@@ -49,9 +53,61 @@ var app = new Vue({
     methods: {
         generateGame: function() {
             var self = this;
-            var data = { room: room, roles: this.checkedRole };
+            var data = { room: room, roles: this.setting.checkedRole, woft: this.setting.woft };
 
             axios.post('/generate', null, { params: data }).then(function(response) {
+                console.log(response.data);
+                self.view = false;
+            }).catch(function(error) {
+                console.log(error);
+            });
+        },
+        clearRole: function() {
+            var self = this;
+            var data = { room: room };
+
+            axios.post('/clearRoles', null, { params: data }).then(function(response) {
+                console.log(response.data);
+                self.view = false;
+            }).catch(function(error) {
+                console.log(error);
+            });
+        },
+        kickMember: function(id) {
+            var data = { uid: id };
+            axios.post('/kickMember', null, { params: data }).then(function(response) {
+                console.log(response.data);
+            }).catch(function(error) {
+                console.log(error);
+            });
+        },
+        addGold: function(id) {
+            var data = { uid: id };
+            axios.post('/addGold', null, { params: data }).then(function(response) {
+                console.log(response.data);
+            }).catch(function(error) {
+                console.log(error);
+            });
+        },
+        kill: function(id) {
+            var data = { uid: id };
+            axios.post('/kill', null, { params: data }).then(function(response) {
+                console.log(response.data);
+            }).catch(function(error) {
+                console.log(error);
+            });
+        },
+        revival: function(id) {
+            var data = { uid: id };
+            axios.post('/revival', null, { params: data }).then(function(response) {
+                console.log(response.data);
+            }).catch(function(error) {
+                console.log(error);
+            });
+        },
+        subGold: function(id) {
+            var data = { uid: id };
+            axios.post('/subGold', null, { params: data }).then(function(response) {
                 console.log(response.data);
             }).catch(function(error) {
                 console.log(error);

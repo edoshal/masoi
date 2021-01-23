@@ -19,3 +19,14 @@ body {
     margin-bottom: 0;
     padding: 0.375rem 1rem;
 }
+
+.user {
+    background: #fff;
+    padding: 5px;
+    border: 1px solid #eee;
+    margin-bottom: 5px;
+}
+
+.is-dead {
+    background: rgb(148, 146, 146);
+}
