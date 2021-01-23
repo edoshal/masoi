@@ -30,3 +30,7 @@ body {
 .is-dead {
     background: rgb(148, 146, 146);
 }
+
+.is-dead .name {
+    text-decoration: line-through;
+}

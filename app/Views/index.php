@@ -88,7 +88,7 @@ include_once 'header.php';
                         <p class="has-text-centered">
                             Người chơi nhận bài và mô tả chức năng của mình.<br />
                             Có thể theo dõi bảng xếp hạng điểm.<br />
-                            Theo dõi ai đã bị thu bài vì chết.
+                            Theo dõi ai đã bị thu bài và tình trạng sống/chết.
                         </p>
                     </div>
                 </div>

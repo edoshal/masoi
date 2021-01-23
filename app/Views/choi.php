@@ -15,11 +15,12 @@ include_once 'header.php'; ?>
         ?>
             <br />
             <div v-for="item in items" :key="item.username" class="user" v-bind:class="{'is-dead': item.status == 0}">
-                <div class="name">{{ item.username }}<br />
-                    Điểm: {{item.point}}<br />
-                    <?php if ($session->isadmin) {
-                        echo "{{item.name}}";
-                    } ?>
+                <div class="name">
+                    <i class="fas fa-user-secret"></i> {{ item.username }}<br />
+                    <i class="fas fa-coins"></i> Điểm: {{item.point}}<br />
+                    <i class="fas fa-award"></i> <?php if ($session->isadmin) {
+                                                        echo "{{item.name}}";
+                                                    } ?>
                     </span>
                 </div>
                 <?php if ($session->isadmin) { ?>
