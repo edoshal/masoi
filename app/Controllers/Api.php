@@ -105,6 +105,41 @@ class Api extends BaseController
 			$masoiModel->Revival($uid);
 		}
 	}
+
+	//add Per Woft
+	public function addPerWoft()
+	{
+		$request = \Config\Services::request();
+		$room = $request->getVar('room');
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$listMember = $masoiModel->GetListMember($room);
+			for ($x = 0; $x < count($listMember); $x++) {
+				if($listMember[$x]->team == "Ma sói"){
+					$masoiModel->AddGold($listMember[$x]->id);
+				}
+			}
+		}
+	}
+	//add Per Village
+	public function addPerVillage()
+	{
+		$request = \Config\Services::request();
+		$room = $request->getVar('room');
+		$session = \Config\Services::session();
+		if ($session->isadmin) {
+			$masoiModel = new \App\Models\MasoiModel();
+			$listMember = $masoiModel->GetListMember($room);
+			for ($x = 0; $x < count($listMember); $x++) {
+				if ($listMember[$x]->team == "Dân làng") {
+					$masoiModel->AddGold($listMember[$x]->id);
+				}
+			}
+		}
+	}
+
+
 	//clear role
 
 	public function clearRoles()

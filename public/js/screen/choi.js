@@ -31,13 +31,17 @@ var app = new Vue({
         setInterval(function() {
             var data = { room: room };
             axios.post('/ping', null, { params: data }).then(function(response) {
-                self.items = response.data;
+                if (self.items != response.data) {
+                    self.items = response.data;
+                }
             }).catch(function(error) {
                 console.log(error);
             });
 
             axios.post('/getrole', null, { params: data }).then(function(response) {
-                self.myrole = response.data;
+                if (self.myrole != response.data) {
+                    self.myrole = response.data;
+                }
             }).catch(function(error) {
                 console.log(error);
             });
@@ -84,6 +88,22 @@ var app = new Vue({
         addGold: function(id) {
             var data = { uid: id };
             axios.post('/addGold', null, { params: data }).then(function(response) {
+                console.log(response.data);
+            }).catch(function(error) {
+                console.log(error);
+            });
+        },
+        addPerVillage: function() {
+            var data = { room: room };
+            axios.post('/addPerVillage', null, { params: data }).then(function(response) {
+                console.log(response.data);
+            }).catch(function(error) {
+                console.log(error);
+            });
+        },
+        addPerWoft: function() {
+            var data = { room: room };
+            axios.post('/addPerWoft', null, { params: data }).then(function(response) {
                 console.log(response.data);
             }).catch(function(error) {
                 console.log(error);

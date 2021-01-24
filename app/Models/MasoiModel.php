@@ -146,7 +146,7 @@ class MasoiModel extends Model
         $builder->update();
     }
 
-    //Sub Gold
+    //Kill
     function Kill($uid)
     {
         $db      = \Config\Database::connect();
@@ -156,7 +156,7 @@ class MasoiModel extends Model
         $builder->update();
     }
 
-    //Sub Gold
+    //Revival
     function Revival($uid)
     {
         $db      = \Config\Database::connect();

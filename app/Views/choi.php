@@ -18,16 +18,16 @@ include_once 'header.php'; ?>
                 <div class="name">
                     <i class="fas fa-user-secret"></i> {{ item.username }}<br />
                     <i class="fas fa-coins"></i> Điểm: {{item.point}}<br />
-                    <i class="fas fa-award"></i> <?php if ($session->isadmin) {
-                                                        echo "{{item.name}}";
-                                                    } ?>
+                    <?php if ($session->isadmin) {
+                        echo " <i class=\"fas fa-award\"></i> {{item.name}}";
+                    } ?>
                     </span>
                 </div>
                 <?php if ($session->isadmin) { ?>
                     <div class="control">
                         <a class="tag is-danger" v-on:click="kickMember(item.id)">Đuổi</a>
-                        <a class="tag is-success" v-on:click="addGold(item.id)">Thêm 10 tiền</a>
-                        <a class="tag is-danger" v-on:click="subGold(item.id)">Trừ 10 tiền</a>
+                        <a class="tag is-success" v-on:click="addGold(item.id)">Thêm 10 Điểm</a>
+                        <a class="tag is-danger" v-on:click="subGold(item.id)">Trừ 10 Điểm</a>
                         <a class="tag is-warning" v-if="item.status == 1" v-on:click=" kill(item.id)">Giết</a>
                         <a class="tag is-warning" v-if="item.status == 0" v-on:click="revival(item.id)">Hồi sinh</a>
                     <?php } ?>
@@ -45,8 +45,10 @@ include_once 'header.php'; ?>
             if ($session->isadmin) {
             ?>
                 <hr />
-                <button v-on:click="clearRole" class="button is-danger">Thu bài</button>
-                <button v-on:click="generateGame" class="button is-success">Chia bài</button>
+                <button v-on:click="clearRole" class="button is-warning">Thu bài</button>
+                <button v-on:click="generateGame" class="button is-link">Chia bài</button>
+                <button v-on:click="addPerVillage" class="button is-success">+ 10 Điểm/Dân</button>
+                <button v-on:click="addPerWoft" class="button is-danger">+ 10 Điểm/Sói</button>
                 <div class="columns">
                     <div class="column">
                         <div class="field">
@@ -66,8 +68,10 @@ include_once 'header.php'; ?>
                 <?php endforeach; ?>
 
                 <br />
-                <button v-on:click="clearRole" class="button is-danger">Thu bài</button>
-                <button v-on:click="generateGame" class="button is-success">Chia bài</button>
+                <button v-on:click="clearRole" class="button is-warning">Thu bài</button>
+                <button v-on:click="generateGame" class="button is-link">Chia bài</button><br />
+                <button v-on:click="addPerVillage" class="button is-success">+ 10 Điểm/Dân</button>
+                <button v-on:click="addPerWoft" class="button is-danger">+ 10 Điểm/Sói</button>
             <?php
             }
         } else {
