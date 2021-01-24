@@ -18,8 +18,25 @@ include_once 'header.php'; ?>
                 <div class="name">
                     <i class="fas fa-user-secret"></i> {{ item.username }}<br />
                     <i class="fas fa-coins"></i> Điểm: {{item.point}}<br />
-                    <?php if ($session->isadmin) {
-                        echo " <i class=\"fas fa-award\"></i> {{item.name}}";
+                    <?php if ($session->isadmin) { ?>
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <div class="select">
+                                    <select>
+                                        <?php foreach ($fullroles as $role) : ?>
+                                            <option value="<?= $role->id ?>" ><?= $role->name ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="icon is-small is-left">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <i class="fas fa-award"></i> {{item.name}}
+
+                    <?php
                     } ?>
                     </span>
                 </div>
@@ -46,7 +63,7 @@ include_once 'header.php'; ?>
             ?>
                 <hr />
                 <button v-on:click="clearRole" class="button is-warning">Thu bài</button>
-                <button v-on:click="generateGame" class="button is-link">Chia bài</button>
+                <button v-on:click="generateGame" class="button is-link">Chia bài</button><br />
                 <button v-on:click="addPerVillage" class="button is-success">+ 10 Điểm/Dân</button>
                 <button v-on:click="addPerWoft" class="button is-danger">+ 10 Điểm/Sói</button>
                 <div class="columns">

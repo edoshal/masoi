@@ -82,7 +82,15 @@ class MasoiModel extends Model
 
         return $query->getResult();
     }
+    function GetFullListRole()
+    {
+        $db      = \Config\Database::connect();
+        $builder = $db->table('role');
+        $builder->whereNotIn('id', [20]);
+        $query = $builder->get();
 
+        return $query->getResult();
+    }
     // isAdmin
     function IsAdmin()
     {

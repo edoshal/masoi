@@ -11,6 +11,7 @@ class Choi extends BaseController
 		$data['room'] = $name;
 		$masoiModel = new \App\Models\MasoiModel();
 		$data['roles'] = $masoiModel->GetListRole();
+		$data['fullroles'] = $masoiModel->GetFullListRole();
 		return view('choi', $data);
 	}
 	//--------------------------------------------------------------------
